@@ -1,0 +1,50 @@
+#!/usr/bin/env bash
+
+#ASDF_INSTALL_VERSION=0.981.1
+#ASDF_INSTALL_PATH=/tmp/ball-install
+#ASDF_INSTALL_TYPE="version"
+
+mkdir -p $ASDF_INSTALL_PATH
+
+installer() {
+  local tmp_download_dir=$(mktemp -d -t ballerina_XXXXXXX)
+  local url=$(awk -v version="$ASDF_INSTALL_VERSION" '$1 == version { print $2 }' $(dirname ${0})/versions)
+  local installer_path=$(echo ${tmp_download_dir}/$(basename ${url}))
+  local zipfilename=$(basename ${url})
+  local filename=${zipfilename%.*}
+
+
+  if ! which java >/dev/null
+  then
+    echo "Java is required. It can be installed using the asdf java plugin."
+    exit 1
+  fi
+
+  if [ "${ASDF_INSTALL_TYPE}" != "version" ]
+  then
+    echo "The asdf-ballerina plugin only supports official binary releases from the ballerina team."
+    exit 1
+  fi
+
+  (
+      set -e
+      curl -Lo ${installer_path} ${url}
+      unzip ${installer_path} -d ${tmp_download_dir}
+      mv ${tmp_download_dir}/${filename}/* ${ASDF_INSTALL_PATH}
+
+      #echo "install path ${ASDF_INSTALL_PATH}"
+      #echo "filename ${filename}"
+  ) || (rm -rf ${ASDF_INSTALL_PATH}; exit 1)
+
+  echo
+  echo "Ballerina $ASDF_INSTALL_VERSION has been installed. Activate globally with:"
+  echo
+  echo "    asdf global ballerina $ASDF_INSTALL_VERSION"
+  echo
+  echo "Activate locally in the current folder with:"
+  echo
+  echo "    asdf local ballerina $ASDF_INSTALL_VERSION"
+  echo
+}
+
+installer
