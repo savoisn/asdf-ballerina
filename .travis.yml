@@ -1,5 +1,5 @@
 language: java
-script: asdf plugin-test ballerina https://github.com/savoisn/asdf-ballerina.git "ballerina --version"
+script: asdf plugin-test ballerina https://github.com/savoisn/asdf-ballerina.git
 before_script:
   - git clone https://github.com/asdf-vm/asdf.git
   - . asdf/asdf.sh
