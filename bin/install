@@ -31,6 +31,7 @@ installer() {
       curl -Lo ${installer_path} ${url}
       unzip -qq ${installer_path} -d ${tmp_download_dir}
       mv ${tmp_download_dir}/${filename}/* ${ASDF_INSTALL_PATH}
+      chmod +x ${ASDF_INSTALL_PATH}/bin/*
 
       #echo "install path ${ASDF_INSTALL_PATH}"
       #echo "filename ${filename}"
