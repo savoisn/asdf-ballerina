@@ -30,6 +30,7 @@ installer() {
       set -e
       curl -Lo ${installer_path} ${url}
       unzip -qq ${installer_path} -d ${tmp_download_dir}
+      mkdir -p ${ASDF_INSTALL_PATH}
       mv ${tmp_download_dir}/${filename}/* ${ASDF_INSTALL_PATH}
 
       echo "${installer_path}"
@@ -44,9 +45,6 @@ installer() {
       ls -lastr ${ASDF_INSTALL_PATH}/bin/*
       echo "Bin folder"
       ls -lastr ${ASDF_INSTALL_PATH}
-
-
-      ls /tmp/asdf*
 
       #echo "install path ${ASDF_INSTALL_PATH}"
       #echo "filename ${filename}"
